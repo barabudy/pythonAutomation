@@ -25,24 +25,20 @@ def do_math(num1, num2, operator):
 class TestMath:
 
     def test_non_int_input_for_num1(self):
-        with pytest.raises(Exception) as exc_info:
-            do_math('hi', '+', 2)
-        assert 'Integers are required for this math operation' in str(exc_info)
-
-        # error = None
-        # try:
-        #     do_math("hi", 2, "+")
-        # except Exception as e:
-        #     error = e
-        # assert error is not None
+        error = None
+        try:
+            do_math("hi", 2, "+")
+        except Exception as e:
+            error = e
+        assert error is not None
 
     def test_non_int_input_for_num2(self):
-        pass
+        with pytest.raises(Exception) as exc_info:
+            do_math(2, "bar", "+")
+        assert 'Integers are required for this math operation' in str(exc_info)
 
     def test_addition_with_negative_result(self):
-        pass
-
-
+        assert 'negative number' in do_math(2, -5, "+")
 
     def test_addition_with_small_result(self):
         # assert do_math(2, 2, "+") == "A small number" // This test is more accurate but also more likely to fail
@@ -55,16 +51,18 @@ class TestMath:
         assert 'large number' in do_math(5, 17, "+")
 
     def test_multiplication_with_negative_result(self):
-        pass
+        assert 'negative number' in do_math(2, -2, "*")
 
     def test_multiplication_with_small_result(self):
-        pass
+        assert 'small number' in do_math(2, 2, "*")
 
     def test_multiplication_with_medium_result(self):
-        pass
+        assert 'medium number' in do_math(4, 3, "*")
 
     def test_multiplication_with_large_result(self):
-        pass
+        assert 'large number' in do_math(5, 17, "*")
 
     def test_invalid_operator(self):
-        pass
+        with pytest.raises(Exception) as exc_info:
+            do_math(2, 2, 'x')
+        assert 'provided operator' in str(exc_info)
